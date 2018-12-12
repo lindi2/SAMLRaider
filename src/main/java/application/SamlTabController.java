@@ -307,7 +307,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 					}
 				}
 				Document document = xmlHelpers.getXMLDocumentOfSAMLMessage(SAMLMessage);
-				SAMLMessage = xmlHelpers.getStringOfDocument(document, 2, true);
+				SAMLMessage = xmlHelpers.getStringOfDocument(document, 0, false);
 			} catch (IOException e) {
 				e.printStackTrace();
 				setInfoMessageText(XML_COULD_NOT_SERIALIZE);
@@ -436,7 +436,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 		try {
 			Document document = xmlHelpers.getXMLDocumentOfSAMLMessage(textArea.getText());
 			if (xmlHelpers.removeAllSignatures(document) > 0) {
-				SAMLMessage = xmlHelpers.getStringOfDocument(document, 2, true);
+				SAMLMessage = xmlHelpers.getStringOfDocument(document, 0, false);
 				textArea.setText(SAMLMessage);
 				edited = true;
 				setInfoMessageText("Message signature successful removed");
@@ -473,7 +473,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 				xmlHelpers.removeEmptyTags(doc);
 				xmlHelpers.signAssertion(doc, signAlgorithm, digestAlgorithm, cert.getCertificate(),
 						cert.getPrivateKey());
-				SAMLMessage = xmlHelpers.getStringOfDocument(doc, 2, true);
+				SAMLMessage = xmlHelpers.getStringOfDocument(doc, 0, false);
 				textArea.setText(SAMLMessage);
 				edited = true;
 				setInfoMessageText("Assertions successfully signed");
@@ -506,7 +506,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 					xmlHelpers.removeOnlyMessageSignature(document);
 					xmlHelpers.signMessage(document, signAlgorithm, digestAlgorithm, cert.getCertificate(),
 							cert.getPrivateKey());
-					SAMLMessage = xmlHelpers.getStringOfDocument(document, 2, true);
+					SAMLMessage = xmlHelpers.getStringOfDocument(document, 0, false);
 					textArea.setText(SAMLMessage);
 					edited = true;
 					setInfoMessageText("Message successfully signed");
@@ -566,7 +566,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 		try {
 			Document document = xmlHelpers.getXMLDocumentOfSAMLMessage(orgSAMLMessage);
 			xswHelpers.applyXSW(samlGUI.getActionPanel().getSelectedXSW(), document);
-			String after = xmlHelpers.getStringOfDocument(document, 2, true);
+			String after = xmlHelpers.getStringOfDocument(document, 0, false);
 			String diff = xswHelpers.diffLineMode(orgSAMLMessage, after);
 
 			File file = File.createTempFile("tmp", ".html", null);
@@ -604,7 +604,7 @@ public class SamlTabController implements IMessageEditorTab, Observer {
 		try {
 			document = xmlHelpers.getXMLDocumentOfSAMLMessage(orgSAMLMessage);
 			xswHelpers.applyXSW(samlGUI.getActionPanel().getSelectedXSW(), document);
-			SAMLMessage = xmlHelpers.getStringOfDocument(document, 2, true);
+			SAMLMessage = xmlHelpers.getStringOfDocument(document, 0, false);
 			textArea.setText(SAMLMessage);
 			edited = true;
 			setInfoMessageText(XSW_ATTACK_APPLIED);

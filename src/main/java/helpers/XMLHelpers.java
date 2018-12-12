@@ -121,7 +121,6 @@ public class XMLHelpers {
 	 */
 	public String getStringOfDocument(Document document, int indent, boolean linebreaks) throws IOException{
 		document.normalize();
-		removeEmptyTags(document);
 		return getString(document, linebreaks, indent);
 	}
 
